@@ -130,3 +130,55 @@ rowMeans(matrix.mat)
 
 matrix.prelim <- rbind(matrix.mat, average, total)
 matrix.prelim
+
+
+# ------- factor --- ordinal data ordering
+marital.status <- c("Married","Married","Single","Married","Divorced","Widowed","Divorced")
+str(marital.status)
+
+marital.factor <- factor(marital.status)
+marital.factor # alphabetical order
+
+typeof(marital.factor)
+str(marital.factor)
+
+new.factor <- factor(marital.status, levels = c("Single","Married","Divorced","Widowed"))
+str(new.factor)
+
+ordered.factor <- factor(marital.status, ordered = TRUE,
+                         levels = c("Single","Married","Divorced","Widowed"))
+ordered.factor # relative ranking
+
+# ------------- for loop
+title <- c("catch","me","if","you","can")
+for(i in title){
+  print(i)
+}
+
+new.title <- vector(length = 5)
+new.title
+
+for(i in 1:5){
+  new.title[i] <- title[i]
+}
+new.title
+
+# ---------- repeat loops
+n <- - 12
+repeat{
+  print(paste("Your value equals", n))
+  n <- n + 1
+  if(n >= 0){
+    print("N is now either 0 or a positive number")
+    print("THe loop will be broken")
+    break
+  }
+}
+
+# ---------- function
+mult12 <- function(x){
+  y <- (x*12)
+  print(y)
+}
+
+mult12(3)
