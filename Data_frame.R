@@ -51,3 +51,52 @@ summarise(star.species, avg.height = mean(height, na.rm = T))
 
 sample_n(star, 10, replace = TRUE) # random 10 rows
 sample_frac(star, 0.1)
+
+
+# -------- using pipe operator
+star.species <- group_by(star, species)
+star.smr <- summarise(star.species, count = n(), avg.mass = mean(mass, na.rm=T))
+filter(star.smr, count > 1)
+filter(summarise(group_by(star, species), count = n(), avg.mass = mean(mass, na.rm = T)), count > 1)
+
+star %>%
+  group_by(species) %>%
+  summarise(count = n(), mass = mean(mass, na.rm = T)) %>%
+  filter(count > 1)
+
+# ------- tidy data
+library(tidyverse)
+billboard <- read.csv("billboard.csv")
+billboard <- as.tibble(billboard)
+billboard
+
+billboard %>% gather(x1st.week:x76th.week, key = "week", value = "rank", na.rm = T) %>%
+  arrange(artist.inverted)
+
+tb <- read.csv("tb.csv")
+tb <- as.tibble(tb)
+tb
+
+tb.gathered <- tb %>% gather(m.014:f.65, key = "column", value = "cases", na.rm = T) %>%
+  arrange(country)
+tb.gathered
+
+tb.separated <- tb.gathered %>% separate(column, into = c("sex", "age"), sep = ".")
+tb.separated
+
+# -- separate
+tb.separated <- tb.separated %>% separate(age, into = c("age.low", "age.high"))
+tb.separated
+
+# -- unite function
+tb.united <- tb.separated %>% unite("age.new", c("age.low", "age.high"))
+tb.united
+
+
+# --- spread
+weather <- read.csv("weather.csv")
+weather <- as.tibble(weather)
+weather
+
+weather.spread <- spread(weather, key = element, value = value)
+weather.spread
